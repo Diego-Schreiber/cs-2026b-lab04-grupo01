@@ -1,1 +1,0 @@
-Estilo arquietectonico elegido: 
