@@ -1,7 +1,7 @@
 # Laboratorio 04: Caso CitaSalud Arequipa
 **Curso:** Construcción de Software  
 **Semestre:** 2026-B  
-**Grupo:** [Número de tu Grupo]
+**Grupo:** 1
 
 ---
 
