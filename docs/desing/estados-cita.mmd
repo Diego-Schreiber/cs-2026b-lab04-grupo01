@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> RESERVADA: reservarCita()
+    RESERVADA --> CONFIRMADA: confirmar() [dentroDelPlazo]
+    RESERVADA --> CANCELADA: cancelar() [solicitadoPorPaciente O tiempoExpirado]
+    CONFIRMADA --> ATENDIDA: atender() [pacientePresente]
+    CONFIRMADA --> NO_ASISTIO: marcarNoAsistio() [horaFinSuperada]
+    CONFIRMADA --> CANCELADA: cancelar() [emergenciaMedica]
+    
+    ATENDIDA --> [*]
+    NO_ASISTIO --> [*]
+    CANCELADA --> [*]
+
+    note right of RESERVADA
+        Al entrar: enviar SMS de confirmacion pendiente
+    end note
