@@ -1,0 +1,31 @@
+@startuml paquetes
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+
+title CitaSalud Arequipa - Paquetes del Monolito Modular
+
+package "citasalud" {
+  package "citas" as CIT
+  package "pacientes" as PAC
+  package "medicos" as MED
+  package "notificaciones" as NOT
+  package "reportes" as REP
+  package "compartido" as COM
+}
+
+CIT ..> PAC : consulta Paciente
+CIT ..> MED : consulta Medico y Horario
+CIT ..> NOT : usa NotificadorSMS (puerto)
+REP ..> CIT : solo lectura
+
+CIT ..> COM
+PAC ..> COM
+MED ..> COM
+NOT ..> COM
+
+note bottom of CIT
+  Regla (ADR-001): Sin dependencias cíclicas.
+  El módulo notificaciones NO depende del módulo citas.
+end note
+@enduml
