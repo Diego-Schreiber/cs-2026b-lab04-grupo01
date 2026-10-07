@@ -1,0 +1,37 @@
+@startuml actividades-atencion-dia
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ActivityBackgroundColor #EEF2F8
+skinparam ActivityBorderColor #1A3A5C
+
+|Paciente|
+start
+:Llega al centro de salud y presenta DNI;
+
+|Admision|
+:Verifica cita en el sistema;
+if (¿Cita confirmada?) then (sí)
+  :Registra llegada del paciente;
+  fork
+    :Imprime ticket de turno;
+  fork again
+    :Notifica al médico por el sistema;
+  end fork
+else (no)
+  :Informa estado de cita (cancelada o no registrada);
+  stop
+endif
+
+|Paciente|
+:Espera llamada en sala de espera;
+
+|Medico|
+:Llama al paciente e ingresa a consulta;
+:Abre historia clínica electrónica;
+:Realiza atención y registra diagnóstico;
+:Marca cita como ATENDIDA;
+
+|Paciente|
+:Recibe indicaciones y receta médica;
+stop
+@enduml
