@@ -1,0 +1,49 @@
+@startuml secuencia-reservar-cita
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+autonumber
+
+actor Paciente
+participant "AppMovil" as UI
+participant "CitaController" as C
+participant "ServicioCitas" as S
+participant "HorarioAtencion" as H
+participant "RepositorioCitas" as R
+participant "Cita" as CitaObj
+participant "NotificadorSMS" as N
+
+Paciente -> UI : Selecciona especialidad, médico y horario
+UI -> C : POST /citas/reserva {pacienteId, horarioId}
+C -> S : reservarCita(pacienteId, horarioId)
+
+S -> R : existeCitaPaciente(pacienteId, fechaHora)
+R --> S : existe (boolean)
+
+alt paciente ya tiene cita en dicho horario o cupo no disponible
+    S --> C : Error ("Doble asignación o horario sin cupo")
+    C --> UI : 409 Conflict / Error de validación
+    UI --> Paciente : Muestra alerta de indisponibilidad
+else disponibilidad válida
+    S -> H : reservarCupo()
+    activate H
+    H --> S : cupo reservado
+    deactivate H
+
+    S -> CitaObj : create(paciente, horario, RESERVADA)
+    activate CitaObj
+    CitaObj --> S : cita
+    deactivate CitaObj
+
+    S -> R : guardar(cita)
+    S ->> N : enviarRecordatorioCita(cita)
+    note right of N
+      asíncrono
+      (no bloquea la respuesta HTTP)
+    end note
+
+    S --> C : cita RESERVADA
+    C --> UI : 201 Created (Cita reservada con éxito)
+    UI --> Paciente : Muestra confirmación de reserva
+end
+@enduml
