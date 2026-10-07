@@ -1,0 +1,80 @@
+@startuml clases-citas
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam class BackgroundColor #EEF2F8
+skinparam classBorderColor #1A3A5C
+
+title CitaSalud Arequipa - Módulo de Citas y Atención (Diseño de Clases)
+
+class Paciente {
+  - id: UUID
+  - dni: String
+  - nombreCompleto: String
+  - celular: String
+  + tieneCitaEnHorario(fechaHora: DateTime): bool
+}
+
+class Medico {
+  - id: UUID
+  - cmp: String
+  - nombreCompleto: String
+}
+
+class Especialidad {
+  - id: UUID
+  - nombre: String
+}
+
+class HorarioAtencion {
+  - id: UUID
+  - fechaHoraInicio: DateTime
+  - fechaHoraFin: DateTime
+  - cuposDisponibles: int
+  + reservarCupo(): void
+  + liberarCupo(): void
+}
+
+class Cita {
+  - id: UUID
+  - fechaHora: DateTime
+  - estado: EstadoCita
+  + confirmar(): void
+  + atender(): void
+  + marcarNoAsistio(): void
+  + cancelar(motivo: String): void
+}
+
+enum EstadoCita {
+  RESERVADA
+  CONFIRMADA
+  ATENDIDA
+  NO_ASISTIO
+  CANCELADA
+}
+
+class ServicioCitas <<servicio>> {
+  + reservarCita(pacienteId: UUID, horarioId: UUID): Cita
+}
+
+interface RepositorioCitas <<puerto>> {
+  + buscarPorId(id: UUID): Cita
+  + guardar(cita: Cita): void
+  + existeCitaPaciente(pacienteId: UUID, fechaHora: DateTime): bool
+}
+
+interface NotificadorSMS <<puerto>> {
+  + enviarRecordatorioCita(cita: Cita): void
+}
+
+Paciente "1" -- "0..*" Cita : solicita >
+Medico "1" -- "0..*" HorarioAtencion : programa >
+Medico "1" *-- "1..*" Especialidad : ejerce >
+HorarioAtencion "1" -- "0..*" Cita : asigna >
+Cita --> EstadoCita
+
+ServicioCitas ..> Cita
+ServicioCitas ..> RepositorioCitas
+ServicioCitas ..> NotificadorSMS
+ServicioCitas ..> HorarioAtencion
+@enduml
