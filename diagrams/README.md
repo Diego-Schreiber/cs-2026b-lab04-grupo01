@@ -1,7 +1,7 @@
 ## Diseño UML (Lab 05)
  
-Historia crítica: reservar una cita verificando cupo y evitando doble
-asignación (RF-02). Diseño coherente con el [ADR-001](adr/001-estilo-arquitectonico.md). 
+Historia crítica: reservar una cita verificando cupo y evitando doble asignación (RF-02). Diseño coherente con el [ADR-001](adr/001-estilo-arquitectonico.md). 
+
 ### Máquina de estados de Cita
 
 ```mermaid
@@ -17,6 +17,7 @@ stateDiagram-v2
     Atendida --> [*]
     NoAsistio --> [*]
     Cancelada --> [*]
+```
  
 ### Diagramas
 - [Historia de usuario](historia.md)
