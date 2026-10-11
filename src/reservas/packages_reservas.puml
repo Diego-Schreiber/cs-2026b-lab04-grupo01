@@ -1,0 +1,23 @@
+@startuml packages_reservas
+set namespaceSeparator none
+package "adaptador_whatsapp" as adaptador_whatsapp {
+}
+package "controlador" as controlador {
+}
+package "entidades" as entidades {
+}
+package "estado_cita" as estado_cita {
+}
+package "puertos" as puertos {
+}
+package "servicios" as servicios {
+}
+adaptador_whatsapp --> entidades
+adaptador_whatsapp --> puertos
+controlador --> entidades
+controlador --> servicios
+entidades --> estado_cita
+puertos --> entidades
+servicios --> entidades
+servicios --> puertos
+@enduml

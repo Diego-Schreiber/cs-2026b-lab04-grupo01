@@ -1,0 +1,94 @@
+@startuml classes_reservas
+set namespaceSeparator none
+class "AdaptadorWhatsApp" as adaptador_whatsapp.AdaptadorWhatsApp {
+  _max_reintentos : int
+  __init__(max_reintentos: int) -> None
+  {abstract}enviar_recordatorio(cita: Cita) -> bool
+}
+class "Cita" as entidades.Cita {
+  _estado
+  _fecha_registro : datetime
+  _horario
+  _id : UUID
+  _paciente
+  estado : EstadoCita
+  id : UUID
+  __init__(paciente: Paciente, horario: Horario) -> None
+  cancelar() -> None
+  confirmar() -> None
+  crear(paciente: Paciente, horario: Horario) -> 'Cita'
+  marcar_atendida() -> None
+  marcar_no_asistio() -> None
+}
+class "CitaDTO" as controlador.CitaDTO {
+  estado : str
+  id : str
+  __init__(self, id: str, estado: str) -> None
+}
+class "ControladorReservas" as controlador.ControladorReservas {
+  _servicio
+  __init__(servicio: ServicioReservas) -> None
+  reservar_cita(paciente: Paciente, horario_id: UUID) -> CitaDTO
+}
+class "Especialidad" as entidades.Especialidad {
+  _id : int
+  _nombre : str
+  __init__(id: int, nombre: str) -> None
+}
+class "EstadoCita" as estado_cita.EstadoCita {
+  name
+}
+class "Horario" as entidades.Horario {
+  _duracion_min : int
+  _fecha_hora : datetime
+  _id : UUID
+  _ocupado : bool
+  __init__(fecha_hora: datetime, duracion_min: int) -> None
+  esta_disponible() -> bool
+  liberar() -> None
+  ocupar() -> None
+}
+class "Medico" as entidades.Medico {
+  _cmp : str
+  _especialidad
+  _horarios : list[Horario]
+  _id : UUID
+  _nombre_completo : str
+  __init__(nombre_completo: str, cmp: str, especialidad: Especialidad) -> None
+  ofrecer(horario: Horario) -> None
+}
+class "Paciente" as entidades.Paciente {
+  _celular : str
+  _correo : str
+  _dni : str
+  _id : UUID
+  _nombres : str
+  __init__(dni: str, nombres: str, celular: str, correo: str) -> None
+}
+class "PuertoNotificacion" as puertos.PuertoNotificacion {
+  {abstract}enviar_recordatorio(cita: Cita) -> bool
+}
+class "RepositorioAgenda" as puertos.RepositorioAgenda {
+  {abstract}bloquear_horario(horario_id: UUID) -> Horario
+  {abstract}buscar_horarios_alternativos(medico_id: UUID, fecha: date) -> list[Horario]
+  {abstract}guardar(cita: Cita) -> None
+}
+class "ServicioNotificaciones" as servicios.ServicioNotificaciones {
+  _puerto
+  __init__(puerto: PuertoNotificacion) -> None
+  {abstract}encolar_recordatorio(cita: Cita) -> None
+  {abstract}enviar_por_correo(cita: Cita) -> None
+  enviar_recordatorio(cita: Cita) -> None
+}
+class "ServicioReservas" as servicios.ServicioReservas {
+  _notificaciones
+  _repositorio
+  __init__(repositorio: RepositorioAgenda, notificaciones: ServicioNotificaciones) -> None
+  reservar_cita(paciente: Paciente, horario_id: UUID) -> Cita
+}
+entidades.Medico --> entidades.Horario : _horarios
+entidades.Especialidad --o entidades.Medico : _especialidad
+entidades.Horario --o entidades.Cita : _horario
+entidades.Paciente --o entidades.Cita : _paciente
+servicios.ServicioNotificaciones --o servicios.ServicioReservas : _notificaciones
+@enduml
