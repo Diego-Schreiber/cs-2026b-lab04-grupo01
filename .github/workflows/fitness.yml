@@ -1,0 +1,19 @@
+name: Architecture Fitness Functions & Quality Gates
+on:
+  push:
+    branches: [ main, release/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  fitness-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest pytest-benchmark import-linter radon
+      - run: lint-imports
+      - run: pytest -q tests/test_fitness.py
+      - run: radon cc src/reservas/despues -a -s -e "max=9" 
