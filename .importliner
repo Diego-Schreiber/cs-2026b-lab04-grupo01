@@ -1,0 +1,20 @@
+[importlinter]
+root_package = src.reservas
+
+[importlinter:contract-1]
+name = El dominio no debe depender de servicios externos ni de infraestructura (ADR-001)
+type = forbidden
+forbidden_modules =
+    src.reservas.externos
+    src.reservas.repositorio
+importers =
+    src.reservas.dominio
+    src.reservas.estados
+
+[importlinter:contract-2]
+name = La entidad Cita debe encapsular sus estados sin acceder a canales (ADR-005)
+type = forbidden
+forbidden_modules =
+    src.reservas.canales
+importers =
+    src.reservas.cita
