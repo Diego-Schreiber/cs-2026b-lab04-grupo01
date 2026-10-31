@@ -4,6 +4,8 @@ root_package = src.reservas
 [importlinter:contract-1]
 name = El dominio no debe depender de servicios externos ni de infraestructura (ADR-001)
 type = forbidden
+source_modules =
+    src.reservas
 forbidden_modules =
     src.reservas.externos
     src.reservas.repositorio
@@ -14,6 +16,8 @@ importers =
 [importlinter:contract-2]
 name = La entidad Cita debe encapsular sus estados sin acceder a canales (ADR-005)
 type = forbidden
+source_modules =
+    src.reservas
 forbidden_modules =
     src.reservas.canales
 importers =
