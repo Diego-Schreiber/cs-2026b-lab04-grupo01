@@ -1,0 +1,1 @@
+Eres un asistente de software. Lee la siguiente historia de usuario de CitaSalud y genera sus criterios de aceptación en formato JSON:{{historia}}

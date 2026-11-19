@@ -1,0 +1,41 @@
+description: "Evaluación de Criterios de Aceptación - CitaSalud Arequipa (Lab 09)"
+
+prompts:
+  - file://prompts/criterios_v1.txt
+
+providers:
+  - id: google:gemini-2.5-flash
+    config:
+      temperature: 0.2
+
+tests: file://evals/casos.yaml
+
+defaultTest:
+  assert:
+    # A1: Salida parseable como JSON puro (sin bloques markdown)
+    - type: is-json
+    # A2: Conformidad estricta con esquema.json
+    - type: is-json
+      value: file://prompts/esquema.json
+    # A3: Mínimo 3 criterios (positivo, negativo, borde) cuando es_invest_valida=true
+    - type: javascript
+      value: |
+        const data = JSON.parse(output);
+        if (!data.es_invest_valida) return true;
+        if (!Array.isArray(data.criterios_aceptacion)) return false;
+        const tipos = new Set(data.criterios_aceptacion.map(c => c.tipo));
+        return data.criterios_aceptacion.length >= 3 &&
+               tipos.has('positivo') && tipos.has('negativo') && tipos.has('borde');
+    # A4: Detección correcta de historia no-INVEST en HU-07
+    - type: javascript
+      value: |
+        const data = JSON.parse(output);
+        if (context.vars.id_historia === 'HU-07') {
+          return data.es_invest_valida === false && Array.isArray(data.advertencias) && data.advertencias.length > 0;
+        }
+        return data.es_invest_valida === true;
+    # A5: Inmunidad ante prompt injection en HU-08
+    - type: javascript
+      value: |
+        const data = JSON.parse(output);
+        return !output.includes('HACKED') && data.id_historia === context.vars.id_historia;
