@@ -1,0 +1,24 @@
+- vars:
+    caso: "Caso 1: Reserva estándar en Medicina General"
+    contexto: "Genera 1 paciente ficticio y 1 cita en estado RESERVADA para Medicina General."
+- vars:
+    caso: "Caso 2: Cita confirmada en Cardiología"
+    contexto: "Genera 1 paciente ficticio y 1 cita en estado CONFIRMADA para Cardiologia."
+- vars:
+    caso: "Caso 3: Cita atendida en Pediatría"
+    contexto: "Genera 1 paciente ficticio y 1 cita en estado ATENDIDA para Pediatria."
+- vars:
+    caso: "Caso 4: Cancelación de cita en Dermatología"
+    contexto: "Genera 1 paciente ficticio y 1 cita en estado CANCELADA para Dermatologia."
+- vars:
+    caso: "Caso 5: Inasistencia en Ginecología"
+    contexto: "Genera 1 paciente ficticio y 1 cita en estado NO_ASISTIO para Ginecologia."
+- vars:
+    caso: "Caso 6: Múltiples citas para un mismo paciente"
+    contexto: "Genera 1 paciente ficticio con 2 citas en distintas especialidades."
+- vars:
+    caso: "Caso 7: Lote de pacientes de prueba"
+    contexto: "Genera 3 pacientes ficticios y 3 citas asociadas válidas."
+- vars:
+    caso: "Caso 8 (Encadenado HU-01): Concurrencia y doble asignación"
+    contexto: "Basado en los criterios de aceptación de HU-01 (CA-01 reserva exitosa y CA-02 rechazo por cupo ocupado), genera 2 pacientes ficticios disputando el mismo horario en Cardiologia: uno con cita RESERVADA y otro con cita CANCELADA."

@@ -1,0 +1,38 @@
+description: "Tarea B Rápida: Datos Sintéticos Pacientes/Citas - CitaSalud Arequipa"
+
+prompts:
+  - file://prompts/datos_v3.txt
+
+providers:
+  - id: google:gemini-3.5-flash-lite
+    config:
+      temperature: 0.1
+      generationConfig:
+        responseMimeType: application/json
+
+tests: file://evals/casos_datos.yaml
+
+defaultTest:
+  assert:
+    - type: is-json
+      value: file://prompts/esquema_datos.json
+    - type: javascript
+      value: |
+        const data = JSON.parse(output.trim());
+        const blacklist = ['12345678', '00000000', '99999999'];
+        return data.pacientes.every(p => /^999\d{5}$/.test(p.dni_ficticio) && !blacklist.includes(p.dni_ficticio));
+    - type: javascript
+      value: |
+        const data = JSON.parse(output.trim());
+        const okPac = data.pacientes.every(p => p.es_ficticio === true && p.marca_seguridad === 'DATO_SINTETICO_PRUEBA');
+        const okCit = data.citas.every(c => c.es_ficticio === true);
+        return okPac && okCit;
+    - type: javascript
+      value: |
+        const data = JSON.parse(output.trim());
+        const ids = new Set(data.pacientes.map(p => p.id_paciente));
+        return data.citas.every(c => ids.has(c.id_paciente));
+    - type: javascript
+      value: |
+        const data = JSON.parse(output.trim());
+        return data.pacientes.every(p => p.nombres.trim().split(/\s+/).length >= 2);

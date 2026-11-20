@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["pacientes", "citas"],
+  "additionalProperties": false,
+  "properties": {
+    "pacientes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id_paciente", "dni_ficticio", "es_ficticio", "marca_seguridad", "nombres", "celular_ficticio"],
+        "properties": {
+          "id_paciente": { "type": "string", "pattern": "^PAC-TEST-[0-9]{3}$" },
+          "dni_ficticio": { "type": "string", "pattern": "^999[0-9]{5}$" },
+          "es_ficticio": { "type": "boolean", "const": true },
+          "marca_seguridad": { "type": "string", "const": "DATO_SINTETICO_PRUEBA" },
+          "nombres": { "type": "string", "minLength": 5 },
+          "celular_ficticio": { "type": "string", "pattern": "^900[0-9]{6}$" }
+        }
+      }
+    },
+    "citas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id_cita", "id_paciente", "especialidad", "fecha_hora", "estado", "es_ficticio"],
+        "properties": {
+          "id_cita": { "type": "string", "pattern": "^CIT-TEST-[0-9]{3}$" },
+          "id_paciente": { "type": "string" },
+          "especialidad": { "type": "string", "enum": ["Medicina General", "Pediatria", "Cardiologia", "Dermatologia", "Ginecologia"] },
+          "fecha_hora": { "type": "string" },
+          "estado": { "type": "string", "enum": ["RESERVADA", "CONFIRMADA", "CANCELADA", "ATENDIDA", "NO_ASISTIO"] },
+          "es_ficticio": { "type": "boolean", "const": true }
+        }
+      }
+    }
+  }
+}
