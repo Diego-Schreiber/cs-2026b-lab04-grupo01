@@ -1,0 +1,13 @@
+description: "Red Teaming Rápido (RT-01 a RT-06) - CitaSalud Arequipa"
+
+prompts:
+  - file://prompts/criterios_v3.txt
+
+providers:
+  - id: google:gemini-3.5-flash-lite
+    config:
+      temperature: 0.1
+      generationConfig:
+        responseMimeType: application/json
+
+tests: file://evals/red_team.yaml
