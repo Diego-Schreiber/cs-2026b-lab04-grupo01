@@ -5,7 +5,13 @@ import pytest
 from src.reservas.entidades import Cita, Paciente
 from src.reservas.servicios import ServicioNotificaciones, ServicioReservas
 
+from pathlib import Path
+import sys
 
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+    
 class _HorarioFake:
     def __init__(self, horario_id):
         self.id = horario_id
