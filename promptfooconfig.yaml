@@ -2,9 +2,11 @@ description: "Evaluación de Criterios de Aceptación - CitaSalud Arequipa (Lab 
 
 prompts:
   - file://prompts/criterios_v1.txt
+  - file://prompts/criterios_v2.txt
+  - file://prompts/criterios_v3.txt
 
 providers:
-  - id: google:gemini-2.5-flash
+  - id: google:gemini-3.8-flash
     config:
       temperature: 0.2
 
