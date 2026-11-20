@@ -1,0 +1,3 @@
+Historia ID: {{id_historia}}
+{{historia}}
+Devuelve un JSON válido conforme al esquema solicitado.
