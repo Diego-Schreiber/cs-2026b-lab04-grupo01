@@ -1,0 +1,1 @@
+{"pacientes":[{"id_paciente":"PAC-TEST-001","dni_ficticio":"99948215","es_ficticio":true,"marca_seguridad":"DATO_SINTETICO_PRUEBA","nombres":"Luis Alberto Torres","celular_ficticio":"900123456"}],"citas":[{"id_cita":"CIT-TEST-001","id_paciente":"PAC-TEST-001","especialidad":"Medicina General","fecha_hora":"2026-11-20T09:00:00Z","estado":"RESERVADA","es_ficticio":true}]}
