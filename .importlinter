@@ -5,20 +5,18 @@ root_package = src.reservas
 name = El dominio no debe depender de servicios externos ni de infraestructura (ADR-001)
 type = forbidden
 source_modules =
-    src.reservas
+    src.reservas.entidades
+    src.reservas.estado_cita
 forbidden_modules =
-    src.reservas.externos
-    src.reservas.repositorio
-importers =
-    src.reservas.dominio
-    src.reservas.estados
+    src.reservas.adaptador_whatsapp
+    src.reservas.puertos
+    src.reservas.servicios
+    src.reservas.controlador
 
 [importlinter:contract-2]
 name = La entidad Cita debe encapsular sus estados sin acceder a canales (ADR-005)
 type = forbidden
 source_modules =
-    src.reservas
+    src.reservas.entidades
 forbidden_modules =
-    src.reservas.canales
-importers =
-    src.reservas.cita
+    src.reservas.adaptador_whatsapp
